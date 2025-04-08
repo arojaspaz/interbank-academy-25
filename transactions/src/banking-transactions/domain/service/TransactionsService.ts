@@ -1,16 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { TransactionsRepository } from '../repository/TransactionsRepository';
+import { TransactionsRepository } from '../ports/outbound/TransactionsRepository';
 import { Transactions } from '../interfaces/Transactions';
+import { GetReportsService } from '../ports/inbound/GetReportsService';
 
 @Injectable()
-export class TransactionsDomainService {
+export class TransactionsDomainService implements GetReportsService{
     constructor(
         @Inject('TransactionsRepository')
         private readonly transactionRepository: TransactionsRepository
     ) { }
 
     async getReports(request: string): Promise<any> {
-        const data = await this.transactionRepository.proccessTransactions(request);
+        const data: Transactions[] = await this.transactionRepository.proccessTransactions(request);
         this.calculateTransactions(data);
         return data;
     }
@@ -18,21 +19,15 @@ export class TransactionsDomainService {
     private calculateTransactions(data: Transactions[]): void {
         const summary = data.reduce(
             (acc, tx) => {
-                // Balance
                 if (tx.type === "Crédito") {
                     acc.balance += tx.amount;
                 } else if (tx.type === "Débito") {
                     acc.balance -= tx.amount;
                 }
-
-                // Conteo por tipo
                 acc.counts[tx.type] = (acc.counts[tx.type] || 0) + 1;
-
-                // Transacción con monto más alto
                 if (tx.amount > acc.maxTransaction.amount) {
                     acc.maxTransaction = tx;
                 }
-
                 return acc;
             },
             {
@@ -41,10 +36,10 @@ export class TransactionsDomainService {
                 maxTransaction: data[0],
             }
         );
-
-        console.log(summary.counts);
-        console.log(`ID: ${summary.maxTransaction.id}, Monto: ${summary.maxTransaction.amount}`);
-        console.log(summary.balance);
+        console.log('Reporte de Transacciones')
+        console.log('--------------------------------------');
+        console.log(`Balance Final: ${summary.balance}`);
+        console.log(`Transacción de Mayor Monto: ID ${summary.maxTransaction.id} - ${summary.maxTransaction.amount}`);
+        console.log(`Conteo de Transacciones: Crédito: ${summary.counts['Débito']} Débito:${summary.counts['Crédito']}`);
     }
-
 } 

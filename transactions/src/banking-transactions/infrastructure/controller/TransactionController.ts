@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { TransactionsApplicationService } from 'src/banking-transactions/application/service/TransactionService';
+import { TransactionsApplicationService } from '../../application/service/TransactionService';
 import * as path from 'path';
 
 @Injectable()

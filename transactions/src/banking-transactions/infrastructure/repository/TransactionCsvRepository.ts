@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { TransactionsRepository } from 'src/banking-transactions/domain/repository/TransactionsRepository';
+import { TransactionsRepository } from 'src/banking-transactions/domain/ports/outbound/TransactionsRepository';
 import * as XLSX from 'xlsx';
 import { promises as fs } from 'fs';
-import { MapperTransaction } from '../support/mapperTransaction';
+import { MapperTransaction } from '../support/MapperTransaction';
 
 @Injectable()
 export class TransactionCsvRepository implements TransactionsRepository {
