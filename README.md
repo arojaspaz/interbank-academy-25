@@ -1,66 +1,34 @@
 # Reto Técnico: Procesamiento de Transacciones Bancarias (CLI)
 
-## Objetivo:
+# Resumen de Transacciones - Proyecto NestJS
 
-Desarrolla una aplicación de línea de comandos (CLI) que procese un archivo CSV con transacciones bancarias y genere un reporte que incluya:
+## Introducción
 
-- **Balance Final:**  
-  Suma de los montos de las transacciones de tipo "Crédito" menos la suma de los montos de las transacciones de tipo "Débito".
+Este proyecto es una aplicación construida con **NestJS** que permite procesar un archivo de transacciones en formato **CSV** y generar un resumen de estas transacciones. La aplicación es capaz de analizar los datos de un archivo CSV, procesarlos y devolver un resumen de las transacciones mediante `console.log`. Se utiliza la biblioteca `xlsx` para leer y procesar los archivos . La estructura sigue una **arquitectura hexagonal** que separa claramente las capas de la aplicación: **Application**, **Domain** e **Infrastructure**.
 
-- **Transacción de Mayor Monto:**  
-  Identificar el ID y el monto de la transacción con el valor más alto.
+## Instrucciones de Ejecución
+- npm install -g @nestjs/cli
+- Clona este repositorio a tu máquina local.
+- npm install.
+- Ejecución de la aplicación: npm run start.
+- Ejecución de tests: npm run test.
 
-- **Conteo de Transacciones:**  
-  Número total de transacciones para cada tipo ("Crédito" y "Débito").
+### Prerequisitos
+Para ejecutar el proyecto, asegúrate de tener instalado Node.js y npm en tu máquina.
 
----
+#### Enfoque y Solución
 
-## Instrucciones
+El enfoque adoptado se centra en separar las responsabilidades de lectura, procesamiento y generación de reportes de las transacciones para mantener un sistema flexible y escalable. Para la lectura y procesamiento de los archivos de transacciones, se utiliza la librería xlsx, la cual permite leer los archivos y mapear los datos a un formato adecuado. La solución incluye un repositorio que se encarga de esta tarea, garantizando que los datos sean correctamente transformados para su uso posterior. Luego, en el proceso de generación de reportes, se aplica la lógica central del negocio para realizar las operaciones necesarias, como la agregación y presentación de los datos, que son fundamentales para proporcionar el reporte final. Este enfoque permite un alto grado de desacoplamiento entre las diferentes partes del sistema, lo que facilita la actualización y modificación de cada componente sin afectar al resto, optimizando así la mantenibilidad y escalabilidad del sistema.
 
-1. **Repositorio Base:**  
-   Clona o haz un fork del repositorio base disponible en:  
-   `https://github.com/codeableorg/interbank-academy-25`
+Pruebas Unitarias con Jest: La aplicación incluye pruebas unitarias con Jest.
 
-2. **Entrada de Datos:**  
-   La aplicación deberá leer un archivo CSV. Ejemplo de contenido:
+#### Estructura del Proyecto
+Arquitectura: Hexagonal.
 
-   ```
-   id,tipo,monto
-   1,Crédito,100.00
-   2,Débito,50.00
-   3,Crédito,200.00
-   4,Débito,75.00
-   5,Crédito,150.00
-   ```
+Capa de Infraestructura: En esta capa se encuentra la implementación de la lectura y procesamiento del archivo de transacciones utilizando la librería xlsx. El TransactionCsvRepository es el encargado de leer el archivo y mapear los datos a un formato adecuado.
 
-3. **Salida del Programa:**  
-   La aplicación debe mostrar el reporte final en la terminal.  
-   Ejemplo de salida:
+Capa de Dominio:En mi caso, esta capa se encarga de procesar la generación del reporte de las transacciones, lo que implica realizar operaciones que son fundamentales para ofrecer el resultado que el sistema requiere. Además de la definción de puertos de entrada como de salida.
 
-   ```
-   Reporte de Transacciones
-   ---------------------------------------------
-   Balance Final: 325.00
-   Transacción de Mayor Monto: ID 3 - 200.00
-   Conteo de Transacciones: Crédito: 3 Débito: 2
-   ```
+Capa de Aplicación: Es la capa encargada de coordinar la interacción entre la capa de dominio y la capa de infraestructura. El TransactionApplicationService recibe las peticiones de los controladores y se comunica con el repositorio para procesar los datos.
 
-4. **Lenguaje de Programación:**  
-   Utiliza el lenguaje de tu preferencia. Opciones recomendadas:
 
-   - Python
-   - Java
-   - C#
-   - JavaScript (Node.js)
-
-5. **README del Proyecto:**  
-   Incluye un archivo `README.md` con la siguiente estructura:
-
-   - **Introducción:** Breve descripción del reto y su propósito.
-   - **Instrucciones de Ejecución:** Cómo instalar dependencias y ejecutar la aplicación.
-   - **Enfoque y Solución:** Lógica implementada y decisiones de diseño.
-   - **Estructura del Proyecto:** Archivos y carpetas principales.
-
-6. **Documentación y Calidad del Código:**
-   - Código bien documentado y fácil de leer.
-   - Comentarios explicando pasos clave y lógica del programa.
